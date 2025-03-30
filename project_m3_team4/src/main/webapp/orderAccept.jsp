@@ -6,11 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duyệt Đơn Hàng</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <c:import url="library.jsp"/>
     <style>
+        .navbar {
+            background-color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .navbar-brand {
+            color: white !important;
+            font-size: 24px;
+        }
+
         .btn-v, .btn-x {
             width: 30px;
             height: 30px;
@@ -41,11 +48,36 @@
             text-decoration: none;
             color: #007bff;
         }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #dc3545; /* Màu nền đỏ */
+            color: white; /* Màu chữ trắng */
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #c82333; /* Màu nền đậm hơn */
+            color: white; /* Giữ màu chữ trắng khi hover */
+        }
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand">Duyệt Đơn Hàng</a>
+    <div class="ml-auto">
+        <a href="home.jsp" class="back-btn">Quay lại</a>
+    </div>
+</nav>
+
 <div class="container mt-4">
-    <h1>Duyệt Đơn Hàng</h1>
+    <%--    <h1>Duyệt Đơn Hàng</h1>--%>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -58,7 +90,6 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Lặp qua các đơn hàng trong trạng thái "chờ duyệt" -->
         <c:forEach var="order" items="${orders}">
             <tr>
                 <td>${order.idDonHang}</td>
@@ -79,7 +110,6 @@
 </div>
 
 <script>
-    // JavaScript để thay đổi trạng thái đơn hàng
     function changeStatus(orderId, newStatus) {
         if (confirm("Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng?")) {
             window.location.href = 'OrderAcceptServlet?orderId=' + orderId + '&newStatus=' + newStatus;

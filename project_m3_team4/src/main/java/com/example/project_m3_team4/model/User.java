@@ -12,7 +12,6 @@ public class User {
     private String diaChi;
     private String vaiTro;
 
-    // Constructor
     public User(String tenDangNhap, String matKhau, String email, String soDt, Date dob, String diaChi, String vaiTro) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -34,7 +33,6 @@ public class User {
         this.vaiTro = vaiTro;
     }
 
-    // Getter and Setter methods
     public int getId() {
         return id;
     }

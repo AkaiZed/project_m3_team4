@@ -5,7 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<%--<a href="login.jsp">Start</a>--%>
 <c:redirect url="/LoginServlet"/>
 </body>
 </html>

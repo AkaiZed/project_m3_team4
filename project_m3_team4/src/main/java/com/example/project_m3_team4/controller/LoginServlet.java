@@ -43,19 +43,15 @@ public class LoginServlet extends HttpServlet {
                                 rs.getString("vai_tro")
                         );
 
-                        // Create a session to store the user's information
                         HttpSession session = request.getSession();
                         session.setAttribute("user", user);
 
-                        // Debugging user role
                         System.out.println("User Role: " + user.getVaiTro());
-                        // Creating a cookie to store user information (e.g., tenDangNhap)
-                        Cookie userCookie = new Cookie("tenDangNhap", tenDangNhap);  // Create the cookie
-                        userCookie.setMaxAge(60 * 60 * 24);  // Set expiry time for cookie (1 day)
-                        response.addCookie(userCookie);  // Add the cookie to the response
+                        Cookie userCookie = new Cookie("tenDangNhap", tenDangNhap);
+                        userCookie.setMaxAge(60 * 60 * 24);
+                        response.addCookie(userCookie);
 
-                        // Redirect to home page after successful login
-                        response.sendRedirect("home.jsp");  // Redirect after successful login
+                        response.sendRedirect("home.jsp");
                     } else {
                         // If credentials are incorrect, display error message
                         request.setAttribute("error", "Tài khoản hoặc mật khẩu không đúng!");

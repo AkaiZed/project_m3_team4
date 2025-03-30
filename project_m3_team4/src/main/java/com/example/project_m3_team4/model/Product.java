@@ -1,15 +1,26 @@
 package com.example.project_m3_team4.model;
 
-public class Product { private String ten;
-    private String thuongHieu;
-    private String model;
+public class Product {
+    private int idDienThoai;
+    private String ten;
+    private int ram;
+    private int boNhoTrong;
     private int gia;
 
-    public Product(String ten, String thuongHieu, String model, int gia) {
+    public Product(int idDienThoai, String ten, int ram, int boNhoTrong, int gia) {
+        this.idDienThoai = idDienThoai;
         this.ten = ten;
-        this.thuongHieu = thuongHieu;
-        this.model = model;
+        this.ram = ram;
+        this.boNhoTrong = boNhoTrong;
         this.gia = gia;
+    }
+
+    public int getIdDienThoai() {
+        return idDienThoai;
+    }
+
+    public void setIdDienThoai(int idDienThoai) {
+        this.idDienThoai = idDienThoai;
     }
 
     public String getTen() {
@@ -20,20 +31,20 @@ public class Product { private String ten;
         this.ten = ten;
     }
 
-    public String getThuongHieu() {
-        return thuongHieu;
+    public int getRam() {
+        return ram;
     }
 
-    public void setThuongHieu(String thuongHieu) {
-        this.thuongHieu = thuongHieu;
+    public void setRam(int ram) {
+        this.ram = ram;
     }
 
-    public String getModel() {
-        return model;
+    public int getBoNhoTrong() {
+        return boNhoTrong;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setBoNhoTrong(int boNhoTrong) {
+        this.boNhoTrong = boNhoTrong;
     }
 
     public int getGia() {

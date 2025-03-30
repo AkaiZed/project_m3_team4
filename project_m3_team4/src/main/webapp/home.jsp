@@ -6,52 +6,81 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang chủ</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <c:import url="library.jsp"/>
     <style>
-        /* Custom styles */
-        .header {
-            background-color: #f8f9fa;
-            padding: 15px;
+        /* Navbar styles */
+        .navbar {
+            background-color: #007bff;
             display: flex;
             justify-content: space-between;
+            padding: 10px 20px;
             align-items: center;
         }
 
-        .header a {
-            margin-right: 20px;
+        .navbar a {
+            color: white;
             text-decoration: none;
-            color: #007bff;
+            font-size: 18px;
+            margin-right: 20px;
         }
 
-        .header a:hover {
+        .navbar a:hover {
             text-decoration: underline;
         }
 
-        .logout-btn {
+        .navbar button {
             background-color: #dc3545;
-            color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        .logout-btn:hover {
+        .navbar button:hover {
             background-color: #c82333;
+        }
+
+        .navbar .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .navbar .navbar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .username {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .navbar .admin-links {
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 
-<%-- Kiểm tra nếu có cookie "tenDangNhap", nếu có thì lấy thông tin người dùng từ CSDL và lưu vào session --%>
 <%
+    // Checking the user information from cookies
     Cookie[] cookies = request.getCookies();
     String tenDangNhapFromCookie = null;
     if (cookies != null) {
@@ -64,7 +93,7 @@
     }
 
     if (tenDangNhapFromCookie != null) {
-        // Lấy thông tin người dùng từ CSDL
+        // Get user info from database if the cookie is set
         Connection conn = ConnectDB.getConnection();
         String sql = "SELECT * FROM nguoi_dung WHERE ten_dang_nhap = ?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -86,24 +115,42 @@
     }
 %>
 
-<%-- Hiển thị Header và menu nếu người dùng là admin --%>
-<c:if test="${sessionScope.user != null && sessionScope.user.vaiTro == 'admin'}">
-    <div class="header">
-        <div>
-            <a href="orderAccept.jsp">Duyệt đơn hàng</a>
-            <a href="manageProducts.jsp">Quản lý sản phẩm</a>
-            <a href="manageUsers.jsp">Quản lý người dùng</a>
-        </div>
-        <form action="login.jsp" method="post">
-            <button class="logout-btn">Đăng xuất</button>
+<!-- Navbar -->
+<div class="navbar">
+    <div class="navbar-left">
+        <a href="home.jsp" class="navbar-brand">Phone Store</a>
+        <a href="home.jsp">Trang chủ</a>
+
+        <c:if test="${sessionScope.user != null && sessionScope.user.vaiTro == 'admin'}">
+            <div class="admin-links">
+                <a href="orderAccept.jsp">Duyệt đơn hàng</a>
+                <a href="manageProducts.jsp">Quản lý sản phẩm</a>
+                <a href="manageUsers.jsp">Quản lý người dùng</a>
+            </div>
+        </c:if>
+    </div>
+
+    <div class="search-bar">
+        <form action="search.jsp" method="get">
+            <input type="text" name="query" placeholder="Tìm sản phẩm..." />
+            <button type="submit">Tìm</button>
         </form>
     </div>
-</c:if>
 
-<div class="container">
+    <div class="navbar-right">
+        <c:if test="${sessionScope.user != null}">
+            <a href="infor.jsp" class="username">Xin chào, ${sessionScope.user.tenDangNhap}</a>
+        </c:if>
+        <form action="login.jsp">
+            <button class="navbar-logout">Đăng xuất</button>
+        </form>
+    </div>
+</div>
+
+<div class="container mt-4">
     <h1 class="mt-4">Chào mừng đến với Phone Store!</h1>
     <p>Chúng tôi cung cấp các sản phẩm chất lượng cao với nhiều kiểu dáng đa dạng.</p>
-    <p>Xin chào, <strong>${sessionScope.user.tenDangNhap}</strong>!</p>
+
     <h3>Danh sách sản phẩm:</h3>
     <div class="row">
         <div class="col-md-4">
@@ -116,8 +163,8 @@
                 </div>
             </div>
         </div>
-        <!-- thêm các sản phẩm khác vào đây -->
     </div>
 </div>
+
 </body>
 </html>
