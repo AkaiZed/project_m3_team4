@@ -123,9 +123,9 @@
 
         <c:if test="${sessionScope.user != null && sessionScope.user.vaiTro == 'admin'}">
             <div class="admin-links">
-                <a href="orderAccept.jsp">Duyệt đơn hàng</a>
-                <a href="manageProducts.jsp">Quản lý sản phẩm</a>
-                <a href="manageUsers.jsp">Quản lý người dùng</a>
+                <a href="OrderAcceptServlet">Duyệt đơn hàng</a>
+                <a href="ManageProductsServlet">Quản lý sản phẩm</a>
+                <a href="ManageUsersServlet">Quản lý người dùng</a>
             </div>
         </c:if>
     </div>

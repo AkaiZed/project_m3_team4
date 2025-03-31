@@ -6,66 +6,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duyệt Đơn Hàng</title>
-    <c:import url="library.jsp"/>
-    <style>
-        .navbar {
-            background-color: #007bff;
-            margin-bottom: 20px;
-        }
+    <style> .navbar {
+        background-color: #007bff;
+        margin-bottom: 20px;
+    }
 
-        .navbar-brand {
-            color: white !important;
-            font-size: 24px;
-        }
+    .navbar-brand {
+        color: white !important;
+        font-size: 24px;
+    }
 
-        .btn-v, .btn-x {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: inline-block;
-            text-align: center;
-            color: white;
-            cursor: pointer;
-        }
+    .btn-v, .btn-x {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-block;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+    }
 
-        .btn-v {
-            background-color: #28a745;
-        }
+    .btn-v {
+        background-color: #28a745;
+    }
 
-        .btn-x {
-            background-color: #dc3545;
-        }
+    .btn-x {
+        background-color: #dc3545;
+    }
 
-        .status-column {
-            text-align: center;
-        }
+    .status-column {
+        text-align: center;
+    }
 
-        .edit-column {
-            text-align: center;
-        }
+    .edit-column {
+        text-align: center;
+    }
 
-        .edit-column a {
-            text-decoration: none;
-            color: #007bff;
-        }
+    .edit-column a {
+        text-decoration: none;
+        color: #007bff;
+    }
 
-        .back-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #dc3545; /* Màu nền đỏ */
-            color: white; /* Màu chữ trắng */
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
+    .back-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #dc3545; /* Màu nền đỏ */
+        color: white; /* Màu chữ trắng */
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
 
-        .back-btn:hover {
-            background-color: #c82333; /* Màu nền đậm hơn */
-            color: white; /* Giữ màu chữ trắng khi hover */
-        }
+    .back-btn:hover {
+        background-color: #c82333; /* Màu nền đậm hơn */
+        color: white; /* Giữ màu chữ trắng khi hover */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .debug {
+        color: blue;
+    }
     </style>
 </head>
 <body>
@@ -75,46 +100,70 @@
         <a href="home.jsp" class="back-btn">Quay lại</a>
     </div>
 </nav>
+<%--<!-- Debug: Kiểm tra dữ liệu orders -->--%>
+<%--<p class="debug">Debug: orders có null không? ${orders == null ? 'Có, orders là null' : 'Không, orders không null'}</p>--%>
+<%--<p class="debug">Debug: Số lượng đơn hàng: ${orders != null ? orders.size() : 'orders là null'}</p>--%>
+<%--<p class="debug">Debug: Danh sách đơn hàng: ${orders}</p>--%>
 
-<div class="container mt-4">
-    <%--    <h1>Duyệt Đơn Hàng</h1>--%>
-    <table class="table table-striped">
+<c:if test="${not empty error}">
+    <p class="error">${error}</p>
+</c:if>
+
+<c:if test="${empty orders}">
+    <p class="error">Không có đơn hàng nào để hiển thị.</p>
+    <p class="error">Lỗi: Vui lòng truy cập qua OrderAcceptServlet (/OrderAcceptServlet) để lấy dữ liệu.</p>
+</c:if>
+
+<c:if test="${not empty orders}">
+    <table>
         <thead>
         <tr>
             <th>ID Đơn Hàng</th>
             <th>Tên Khách Hàng</th>
-            <th>Sản Phẩm</th>
             <th>Tổng Tiền</th>
             <th>Trạng Thái</th>
-            <th>Thao Tác</th>
+            <th>Chi Tiết</th>
+            <th>Cập Nhật Trạng Thái</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach var="order" items="${orders}">
             <tr>
-                <td>${order.idDonHang}</td>
-                <td>${order.tenKhachHang}</td>
-                <td>${order.tenSanPham}</td>
-                <td>${order.tongTien}</td>
-                <td class="status-column">
-                    <button class="btn-v" onclick="changeStatus(${order.idDonHang}, 'da_duyet')">V</button>
-                    <button class="btn-x" onclick="changeStatus(${order.idDonHang}, 'da_huy')">X</button>
+                <td>${order.orderId}</td>
+                <td>${order.customerName}</td>
+                <td>${order.totalAmount}</td>
+                <td>${order.orderStatus}</td>
+                <td>
+                    <ul>
+                        <c:forEach var="detail" items="${order.orderDetails}">
+                            <li>${detail.productName}: ${detail.productPrice}</li>
+                        </c:forEach>
+                    </ul>
                 </td>
-                <td class="edit-column">
-                    <a href="#">Sửa</a>
+                <td>
+                    <form action="OrderAcceptServlet" method="post">
+                        <input type="hidden" name="orderId" value="${order.orderId}">
+                        <select name="newStatus">
+                            <option value="cho_duyet" <c:if test="${order.orderStatus == 'cho_duyet'}">selected</c:if>>
+                                Chờ duyệt
+                            </option>
+                            <option value="da_duyet" <c:if test="${order.orderStatus == 'da_duyet'}">selected</c:if>>Đã
+                                duyệt
+                            </option>
+                            <option value="hoan_tat" <c:if test="${order.orderStatus == 'hoan_tat'}">selected</c:if>>
+                                Hoàn tất
+                            </option>
+                            <option value="da_huy" <c:if test="${order.orderStatus == 'da_huy'}">selected</c:if>>Đã
+                                hủy
+                            </option>
+                        </select>
+                        <button type="submit">Cập nhật</button>
+                    </form>
                 </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-</div>
-
-<script>
-    function changeStatus(orderId, newStatus) {
-        if (confirm("Bạn có chắc chắn muốn thay đổi trạng thái đơn hàng?")) {
-            window.location.href = 'OrderAcceptServlet?orderId=' + orderId + '&newStatus=' + newStatus;
-        }
-    }
-</script>
+</c:if>
 </body>
 </html>

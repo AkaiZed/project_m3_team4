@@ -150,9 +150,9 @@
             <label>
                 <input type="checkbox" name="rememberMe"> Remember me
             </label>
-            <a href="register.jsp" class="forgot-password">Quên mật khẩu?</a>
+            <a href="forgetPassword.jsp" class="forgot-password">Quên mật khẩu?</a>
         </div>
-        <button type="submit" class="btn-submit">Login</button>
+        <button type="submit" class="btn-submit">Đăng nhập</button>
         <p class="register-link">Chưa có tài khoản? <a href="register.jsp">Đăng ký</a></p>
     </form>
 </div>

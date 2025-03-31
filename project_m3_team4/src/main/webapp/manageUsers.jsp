@@ -32,11 +32,10 @@
         }
 
         .back-btn:hover {
-            background-color: #c82333; /* Màu nền đậm hơn */
-            color: white; /* Giữ màu chữ trắng khi hover */
+            background-color: #c82333;
+            color: white;
         }
 
-        /* Table Styling */
         table {
             width: 100%;
             margin-top: 20px;
@@ -66,13 +65,14 @@
 </nav>
 
 <div class="container mt-4">
-    <%--  <h3>Danh sách người dùng</h3>--%>
     <table class="table table-bordered">
         <thead>
         <tr>
             <th>ID Người Dùng</th>
             <th>Tên Người Dùng</th>
-            <th>Ngày Tạo</th>
+            <th>Số Điện Thoại</th>
+            <th>Email</th>
+            <th>Địa chỉ</th>
             <th>Thao Tác</th>
         </tr>
         </thead>
@@ -81,7 +81,9 @@
             <tr>
                 <td>${user.id}</td>
                 <td>${user.tenDangNhap}</td>
-                <td>${user.ngayTao}</td>
+                <td>${user.soDt}</td>
+                <td>${user.email}</td>
+                <td>${user.diaChi}</td>
                 <td>
                     <button onclick="confirmDelete('${user.tenDangNhap}')" class="btn btn-danger">Xóa</button>
                 </td>
@@ -92,7 +94,6 @@
 </div>
 
 <script>
-    // Hàm để xác nhận khi xóa người dùng
     function confirmDelete(tenDangNhap) {
         if (confirm("Bạn có chắc muốn xóa tài khoản: " + tenDangNhap + "?")) {
             window.location.href = "DeleteUserServlet?tenDangNhap=" + tenDangNhap;

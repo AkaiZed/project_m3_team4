@@ -22,14 +22,14 @@ public class ManageUsersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<User> users = getUsers();
-        request.setAttribute("users", users);
-        request.getRequestDispatcher("manageUsers.jsp").forward(request, response);
+        List<User> users = getUsers(); // Gọi phương thức để lấy danh sách người dùng
+        request.setAttribute("users", users); // Đưa danh sách vào request attribute
+        request.getRequestDispatcher("manageUsers.jsp").forward(request, response); // Chuyển hướng tới JSP
     }
 
     private List<User> getUsers() {
         List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM nguoi_dung";
+        String sql = "SELECT * FROM nguoi_dung"; // Truy vấn tất cả người dùng
 
         try (Connection conn = ConnectDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -37,7 +37,7 @@ public class ManageUsersServlet extends HttpServlet {
 
             while (rs.next()) {
                 User user = new User(
-                        rs.getInt("id"),
+                        rs.getInt("id_nguoi_dung"),
                         rs.getString("ten_dang_nhap"),
                         rs.getString("mat_khau"),
                         rs.getString("email"),
@@ -46,10 +46,10 @@ public class ManageUsersServlet extends HttpServlet {
                         rs.getString("dia_chi"),
                         rs.getString("vai_tro")
                 );
-                users.add(user);
+                users.add(user); // Thêm người dùng vào danh sách
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // In lỗi nếu có
         }
         return users;
     }
